@@ -1,4 +1,10 @@
 from flask import Flask, request, jsonify, render_template
+import os
+import sys
+
+# Ensure the current directory is in the path for module imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from src.predictor import SpamPredictor
 from src.email_fetcher import EmailFetcher
 import os
