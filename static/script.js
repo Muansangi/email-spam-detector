@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/emails', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...currentCredentials, limit: 10 })
+                body: JSON.stringify({ ...currentCredentials, limit: 50 })
             });
             
             const data = await res.json();
