@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentry • Email Spam Detection</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Phosphor Icons for elegant UI elements -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <main class="app-container">
+        
+        <!-- Login Section -->
+        <section id="login-view" class="view active">
+            <div class="login-card glass-panel">
+                <div class="brand">
+                    <i class="ph-fill ph-shield-check shield-icon"></i>
+                    <h1>Sentry</h1>
+                    <p>AI-Powered Inbox Protection</p>
+                </div>
+
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="ph ph-envelope"></i>
+                            <input type="email" id="email" placeholder="you@gmail.com" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div style="display: flex; justify-content: space-between;">
+                            <label for="password">App Password</label>
+                            <a href="#" id="help-link" class="help-link">How to get this?</a>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="ph ph-lock-key"></i>
+                            <input type="password" id="password" placeholder="••••••••••••" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group hidden">
+                        <label for="imap">IMAP Server</label>
+                        <div class="input-wrapper">
+                            <i class="ph ph-server"></i>
+                            <input type="text" id="imap" value="imap.gmail.com" required>
+                        </div>
+                    </div>
+
+                    <p id="login-error" class="error-msg"></p>
+
+                    <button type="submit" id="login-btn" class="primary-btn">
+                        <span>Secure Connect</span>
+                        <i class="ph ph-arrow-right"></i>
+                        <span class="loader hidden"></span>
+                    </button>
+                    
+                    <div class="manual-check-prompt">
+                        <p>Or want to check text manually?</p>
+                        <button type="button" id="open-manual-btn" class="secondary-btn">Manual Check</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-view" class="view">
+            <header class="dashboard-header glass-panel">
+                <div class="brand-small">
+                    <i class="ph-fill ph-shield-check shield-icon"></i>
+                    <h2>Sentry</h2>
+                </div>
+                <div class="user-info">
+                    <span id="user-email-display">connected@email.com</span>
+                    <button id="logout-btn" class="icon-btn" title="Disconnect">
+                        <i class="ph ph-sign-out"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div class="dashboard-controls glass-panel">
+                    <div class="controls-left">
+                        <h3>Recent Inbox</h3>
+                        <p>Latest emails scanned for threats</p>
+                    </div>
+                    <div class="controls-actions">
+                        <button id="delete-btn" class="danger-btn small" disabled>
+                            <i class="ph ph-trash"></i>
+                            <span>Delete Selected</span>
+                            <i class="loader ph ph-spinner hidden"></i>
+                        </button>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="select-all">
+                            <label for="select-all">Select All</label>
+                        </div>
+                        <button id="refresh-btn" class="primary-btn small">
+                            <i class="ph ph-arrows-clockwise"></i>
+                            <span>Refresh Inbox</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="email-list-container">
+                    <div id="loading-state" class="state-container hidden">
+                        <div class="bouncing-loader">
+                            <div></div><div></div><div></div>
+                        </div>
+                        <p>Fetching & Analyzing Emails...</p>
+                    </div>
+
+                    <div id="empty-state" class="state-container hidden">
+                        <i class="ph ph-envelope-open"></i>
+                        <p>No emails found.</p>
+                    </div>
+
+                    <ul id="email-list" class="email-list">
+                        <!-- Dynamic Email Items will go here -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manual Check Modal -->
+        <div id="manual-modal" class="modal hidden">
+            <div class="modal-content glass-panel">
+                <div class="modal-header">
+                    <h3>Manual Text Check</h3>
+                    <button id="close-modal-btn" class="icon-btn"><i class="ph ph-x"></i></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="manual-text" rows="6" placeholder="Paste email content here to check if it's spam..."></textarea>
+                    <button id="check-text-btn" class="primary-btn">Analyze Text</button>
+                    <div id="manual-result" class="manual-result hidden">
+                        <div class="badge-large" id="manual-badge">Spam</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div id="help-modal" class="modal hidden">
+            <div class="modal-content glass-panel" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3>How to get an App Password</h3>
+                    <button id="close-help-btn" class="icon-btn"><i class="ph ph-x"></i></button>
+                </div>
+                <div class="modal-body help-steps">
+                    <ol>
+                        <li>Go to <strong>Google Account > Security</strong>.</li>
+                        <li>Ensure <strong>2-Step Verification</strong> is turned ON.</li>
+                        <li>Search for <strong>"App passwords"</strong> in the settings search bar.</li>
+                        <li>Create a new password for "Mail" and a Custom Name (e.g., "Sentry").</li>
+                        <li>Copy the 16-letter code and paste it here!</li>
+                    </ol>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                        <em>Note: Your normal email password will not work here due to Google's strict security policies.</em>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
