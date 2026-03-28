@@ -710,3 +710,82 @@ input:focus, textarea:focus {
     font-size: 0.95rem;
     color: var(--text-main);
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 1rem;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        padding: 1rem;
+    }
+
+    .user-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .dashboard-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.2rem;
+        padding: 1.2rem;
+    }
+
+    .controls-actions {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .controls-left h3 {
+        font-size: 1.1rem;
+    }
+
+    .email-item {
+        padding: 1.2rem 1rem;
+        gap: 1rem;
+    }
+
+    .email-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .email-sender {
+        font-size: 0.95rem;
+    }
+
+    .email-subject {
+        font-size: 0.9rem;
+    }
+
+    .badge {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.7rem;
+    }
+    
+    .danger-btn.small, .primary-btn.small {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .controls-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+    }
+    
+    .checkbox-wrapper {
+        justify-content: center;
+        padding: 0.5rem;
+        background: rgba(255,255,255,0.03);
+        border-radius: 8px;
+    }
+}
